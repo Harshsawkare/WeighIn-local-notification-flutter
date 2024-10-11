@@ -112,7 +112,7 @@ class WeightListView extends StatelessWidget {
 
   bool areDatesEqual(DateTime start, DateTime end) {
     return start.year == end.year &&
-    start.month == end.month &&
-    start.day == end.day;
+        start.month == end.month &&
+        start.day == end.day;
   }
 }

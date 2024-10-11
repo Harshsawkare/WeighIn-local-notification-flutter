@@ -20,7 +20,8 @@ class NotificationController extends GetxController {
   void scheduleDailyNotification(TimeOfDay time) {
     NotificationService.scheduleNotification(
       title: 'Reminder',
-      body: "Hey ${_userController.userName.value}, did you track your weight today?",
+      body:
+          "Hey ${_userController.userName.value}, did you track your weight today?",
       scheduledNotificationDateTime: DateTime(
         DateTime.now().year,
         DateTime.now().month,

@@ -72,11 +72,16 @@ class HomeData {
   }
 
   void saveWeightDetails() {
+    // Retrieve the integer and decimal parts of the weight
     final intVal = weightController.intWeight.value;
     final decVal = weightController.decWeight.value;
 
+    // Calculate the total weight as a double
     final double weight = intVal + decVal / 100;
+    // Add the weight entry with the current date
     weightController.addWeight(weight, DateTime.now());
-    Get.back();
+
+    Get.back(); // Go back to the previous screen
   }
+
 }

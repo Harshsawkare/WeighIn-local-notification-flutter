@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -29,24 +32,43 @@ class NotificationService {
             iOS: initializationSettingsDarwin);
 
     // request notification permissions
-    await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        )
-        .then((iOSPermission) {
-      if (!iOSPermission!) {
-        AppSnackbar().show('Head Up',
-            'You might wanna enable the notification from the settings to receive reminders.');
-      }
-    });
+    if (Platform.isIOS) {
+      await _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      )
+          .then((iOSPermission) {
+        // No null check; if iOSPermission is null, it will simply evaluate as false
+        if (iOSPermission == null || !iOSPermission) {
+          sendDisabledNotificationAlert();
+        }
+      });
+    } else if (Platform.isAndroid) {
+      await _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestPermission()
+          .then((androidPermission) {
+        // No null check; if androidPermission is null, it will simply evaluate as false
+        if (androidPermission == null || !androidPermission) {
+          sendDisabledNotificationAlert();
+        }
+      });
+    }
 
     _flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: onNotificationTap,
         onDidReceiveBackgroundNotificationResponse: onNotificationTap);
+  }
+
+  static void sendDisabledNotificationAlert() {
+
+    unawaited(Future.delayed(const Duration(seconds: 2)).then((_){
+      AppSnackbar().show('Head Up',
+          'You might wanna enable the notification from the settings to receive reminders.');
+    }));
   }
 
   // to schedule a local notification

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weighin/data/settings_data.dart';
 import 'package:weighin/ui/widgets/button.dart';
-
 import '../../controllers/time_controller.dart';
 import '../../utils/color_theme.dart';
 import '../widgets/time_picker.dart';
@@ -50,8 +49,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
             ),
-
-            //time picker
+            // Time picker for setting reminder time
             TimePicker(
               timeController: timeController,
             ),
@@ -62,18 +60,16 @@ class SettingsScreen extends StatelessWidget {
                 child: const Center(
                   child: Text(
                     'you will get a reminder to add weigh every day.',
-                    style:
-                        TextStyle(color: ColorTheme.primaryColor, fontSize: 12),
+                    style: TextStyle(color: ColorTheme.primaryColor, fontSize: 12),
                     maxLines: 2,
                   ),
                 ),
               ),
             ),
-
-            //reset
+            // Button to reset settings
             AppButton(
                 label: 'Reset',
-                onTap: () => SettingsData().saveDetails()),
+                onTap: () => SettingsData().saveDetails()), // Save settings
           ],
         ),
       ),

@@ -6,7 +6,6 @@ import 'package:weighin/data/setup_data.dart';
 import 'package:weighin/ui/widgets/button.dart';
 import 'package:weighin/ui/widgets/text_field.dart';
 import 'package:weighin/ui/widgets/time_picker.dart';
-
 import '../../utils/color_theme.dart';
 
 class SetupScreen extends StatefulWidget {
@@ -23,7 +22,7 @@ class _SetupScreenState extends State<SetupScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => false, // Disable back navigation
       child: GestureDetector(
         // Dismiss the keyboard when tapping outside the text field
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -41,16 +40,14 @@ class _SetupScreenState extends State<SetupScreen> {
                     width: Get.size.width * 0.5,
                   ),
                 ),
-
-                //name field
+                // Name input field
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: AppTextField(
                     hint: 'Name',
                   ),
                 ),
-
-                //time picker
+                // Time picker for setting reminder time
                 TimePicker(
                   timeController: widget.timeController,
                 ),
@@ -61,20 +58,18 @@ class _SetupScreenState extends State<SetupScreen> {
                     child: const Center(
                       child: Text(
                         'you will get a reminder to add weigh every day.',
-                        style: TextStyle(
-                            color: ColorTheme.primaryColor, fontSize: 12),
+                        style: TextStyle(color: ColorTheme.primaryColor, fontSize: 12),
                         maxLines: 2,
                       ),
                     ),
                   ),
                 ),
-
-                //go ahead
+                // Button to proceed
                 AppButton(
                     label: 'Go ahead',
                     width: 150,
                     height: 45,
-                    onTap: () => SetupData().saveDetails()),
+                    onTap: () => SetupData().saveDetails()), // Save setup details
               ],
             ),
           ),

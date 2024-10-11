@@ -32,7 +32,7 @@ class DateTimeUtil {
       suffix = 'th';
     }
 
-    // Construct the formatted date string
-    return '$month ${day}$suffix, ${dateTime.year}';
+    // Format the date as "Day Month, Year"
+    return '$month $day$suffix, ${dateTime.year}';
   }
 }
