@@ -11,26 +11,28 @@ class NotificationController extends GetxController {
     super.onInit();
     // Initialize the notification service
     NotificationService.init();
-
-    // Schedule notification with the current time
-    scheduleDailyNotification(_userController.notificationTime.value);
   }
 
   // Schedule notification at a specific time
-  void scheduleDailyNotification(TimeOfDay time) {
-    NotificationService.scheduleNotification(
-      title: 'Reminder',
-      body:
-          "Hey ${_userController.userName.value}, did you track your weight today?",
-      scheduledNotificationDateTime: DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-        time.hour,
-        time.minute,
-      ),
-      payload: '',
-    );
+  Future<void> scheduleDailyNotification(TimeOfDay time) async {
+
+    var hasPermission = await NotificationService.checkNotificationPermission();
+
+    if (hasPermission) {
+      NotificationService.scheduleNotification(
+        title: 'Reminder',
+        body:
+            "Hey ${_userController.userName.value}, did you track your weight today?",
+        scheduledNotificationDateTime: DateTime(
+          DateTime.now().year,
+          DateTime.now().month,
+          DateTime.now().day,
+          time.hour,
+          time.minute,
+        ),
+        payload: '',
+      );
+    }
   }
 
   // Change notification time and reschedule

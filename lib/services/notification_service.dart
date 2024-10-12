@@ -32,6 +32,15 @@ class NotificationService {
             iOS: initializationSettingsDarwin);
 
     // request notification permissions
+    await checkNotificationPermission();
+
+    _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse: onNotificationTap,
+        onDidReceiveBackgroundNotificationResponse: onNotificationTap);
+  }
+
+  // request notification permissions
+  static Future<bool> checkNotificationPermission() async {
     if (Platform.isIOS) {
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
@@ -44,6 +53,7 @@ class NotificationService {
         // No null check; if iOSPermission is null, it will simply evaluate as false
         if (iOSPermission == null || !iOSPermission) {
           sendDisabledNotificationAlert();
+          return true;
         }
       });
     } else if (Platform.isAndroid) {
@@ -54,13 +64,11 @@ class NotificationService {
         // No null check; if androidPermission is null, it will simply evaluate as false
         if (androidPermission == null || !androidPermission) {
           sendDisabledNotificationAlert();
+          return true;
         }
       });
     }
-
-    _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: onNotificationTap,
-        onDidReceiveBackgroundNotificationResponse: onNotificationTap);
+    return false;
   }
 
   static void sendDisabledNotificationAlert() {
