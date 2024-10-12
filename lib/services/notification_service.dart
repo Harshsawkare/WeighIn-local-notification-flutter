@@ -95,6 +95,7 @@ class NotificationService {
                 presentAlert: true, presentBadge: true, presentSound: true)),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time, // schedule notifications daily at the give time
         payload: payload,
         androidAllowWhileIdle: true);
   }
